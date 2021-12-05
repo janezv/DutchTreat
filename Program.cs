@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DutchTreat.Data;
@@ -16,45 +15,43 @@ namespace DutchTreat
   {
     public static void Main(string[] args)
     {
-         var host=CreateHostBuilder(args).Build();
-        
+      var host = CreateHostBuilder(args).Build();
 
-        if(args.Length==1 && args[0].ToLower() == "/seed")
-            {
-                RunSeeding(host);
-            }
-        else
-            {
-                host.Run();
-            }
-        
+      if (args.Length > 0 && args[0].ToLower() == "/seed")
+      {
+         RunSeeding(host);
+        return;
+      }
+
+      host.Run();
     }
 
     private static void RunSeeding(IHost host)
-        {
-            var scopeFactory=host.Services.GetService<IServiceScopeFactory>();
-            using (var scope= scopeFactory.CreateScope())
-            {
-                var seeder = scope.ServiceProvider.GetService<DutchSeeder>();
-                seeder.Seed();
-            }
-        }
+    {
+      var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+      using (var scope = scopeFactory.CreateScope())
+      {
+        var seeder = scope.ServiceProvider.GetService<DutchSeeder>();
+        seeder.Seed();
+      }
+    }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration(AddConfiguration)
+            .ConfigureAppConfiguration(SetupConfiguration)
             .ConfigureWebHostDefaults(webBuilder =>
             {
               webBuilder.UseStartup<Startup>();
             });
 
-        private static void AddConfiguration(HostBuilderContext ctx, 
-            IConfigurationBuilder bldr)
-        {
-            bldr.Sources.Clear();
-            bldr.SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("config.json")
-                .AddEnvironmentVariables();
-        }
+    private static void SetupConfiguration(HostBuilderContext ctx, IConfigurationBuilder builder)
+    {
+      // Removing the default configuration options
+      builder.Sources.Clear();
+
+      builder.AddJsonFile("config.json", false, true)
+             .AddEnvironmentVariables();
+
     }
+  }
 }

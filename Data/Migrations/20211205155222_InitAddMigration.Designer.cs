@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DutchTreat.Migrations
 {
     [DbContext(typeof(DutchContext))]
-    [Migration("20211203205424_SeedData")]
-    partial class SeedData
+    [Migration("20211205155222_InitAddMigration")]
+    partial class InitAddMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.21")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("DutchTreat.Data.Entities.Order", b =>
@@ -42,7 +42,7 @@ namespace DutchTreat.Migrations
                         new
                         {
                             Id = 1,
-                            OrderDate = new DateTime(2021, 12, 3, 20, 54, 24, 710, DateTimeKind.Utc).AddTicks(3295),
+                            OrderDate = new DateTime(2021, 12, 5, 15, 52, 21, 768, DateTimeKind.Utc).AddTicks(3859),
                             OrderNumber = "12345"
                         });
                 });
@@ -64,7 +64,7 @@ namespace DutchTreat.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.HasKey("Id");
 
@@ -107,7 +107,7 @@ namespace DutchTreat.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
@@ -129,6 +129,15 @@ namespace DutchTreat.Migrations
                     b.HasOne("DutchTreat.Data.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DutchTreat.Data.Entities.Order", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,4 @@
-﻿
-/*
- body {
+﻿/*body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -74,38 +72,14 @@ ul.products-props {
     width: auto;
   }
 
-  menu li {
-      display: inline;
+menu li {
+  display: inline;
+}
+
+  menu li::after {
+    content: " |";
   }
 
-menu li::after {
-    content:' |';
-}
-
-menu li:last-of-type::after{
-    content:"";
-}
-
-*/
-
-nav {
-    margin: 25px;
-    padding: 25px;
-}
-
-.form-group {
-    margin: 5px;
-    padding: 5px;
-}
-
-i{
-    padding:2px;
-    margin:2px;
-}
-
-.navbar-brand i {
-    padding: 8px;
-    margin: 8px;
-}
-
-
+  menu li:last-of-type::after {
+    content: "";
+  }*/
