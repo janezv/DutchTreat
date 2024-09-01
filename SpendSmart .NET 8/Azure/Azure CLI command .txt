@@ -1,0 +1,2 @@
+cd \ 
+az webapp up --name SpendSmart --resource-group EU_sw --runtime "DOTNETCORE|8.0"
