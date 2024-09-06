@@ -2,6 +2,7 @@ Link:
 https://youtu.be/xuFdrXqpPB0?t=1469
 https://youtu.be/xuFdrXqpPB0?t=1647
 https://youtu.be/xuFdrXqpPB0?t=2334
+https://youtu.be/xuFdrXqpPB0?t=2415
 
 
 Link2:

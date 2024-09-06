@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SpendSmart.Models;
 using System.Diagnostics;
+using System.Linq;
 
 namespace SpendSmart.Controllers
 {
@@ -21,24 +22,64 @@ namespace SpendSmart.Controllers
             return View();
         }
 
-        public IActionResult Expenses() 
-        {
-            var allExpenses = _context.Expenses.ToList();
-            return View(allExpenses); 
-        }
-
-        public IActionResult CreateEditExpense()
+        public IActionResult Edit()
         {
             return View();
         }
 
-        public IActionResult CreateEditExpenseForm(Expense model)
+        //public IActionResult Delete()
+        //{
+        //    return View();
+        //}
+
+        public IActionResult Expenses() 
+        {
+            var allExpenses = _context.Expenses.ToList();
+
+            var totalExpenses = allExpenses.Sum(x=>x.Value);
+
+            ViewBag.totalExpenses = totalExpenses;
+
+            return View(allExpenses); 
+        }
+
+        public IActionResult CreateEditExpense(int? id)
         {
 
-            _context.Expenses.Add(model);
+            if (id != null) 
+            {
+                var expenseInDb = _context.Expenses.SingleOrDefault(x => x.Id == id);
+                return View(expenseInDb);
+            }
+           
+            return View();
+  
+        }
+
+        public IActionResult CreateEditExpenseForm(Expense model)
+        {
+            if (model.Id == 0)
+            {
+                // Create 
+                _context.Expenses.Add(model);
+
+            }
+            else
+            {
+                _context.Expenses.Update(model);
+            }
+
             _context.SaveChanges();
 
             return RedirectToAction("Expenses");
+        }
+
+        public IActionResult DeleteExpense(int id)
+        {
+           var expenseInDb=_context.Expenses.SingleOrDefault(x => x.Id == id);
+            _context.Expenses.Remove(expenseInDb);
+            _context.SaveChanges();
+           return RedirectToAction("Expenses");
         }
 
         public IActionResult Privacy()
